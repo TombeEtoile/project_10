@@ -1,4 +1,6 @@
 from django.db import models
+# from django.contrib.auth.models import User
+# import uuid
 
 
 class Project(models.Model):
@@ -9,12 +11,21 @@ class Project(models.Model):
         ('android', 'Android'),
     ]
 
-    author = models.fields.CharField(max_length=255)
-    name = models.fields.CharField(max_length=255)
-    description = models.fields.TextField(blank=True)
-    contributor = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    author = models.CharField(max_length=255)
+    # author = models.ForeignKey(User, related_name='authored_projects', on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)
+    description = models.TextField(blank=True)
+    contributor = models.CharField(max_length=255)
+    # contributors = models.ManyToManyField(User, related_name='contributed_projects', through='Contributor')
     type = models.CharField(max_length=50, choices=TYPE_CHOICES)
     created_time = models.fields.DateTimeField(auto_now_add=True)
+
+    '''
+    author = models.ForeignKey(User, related_name='authored_projects', on_delete=models.CASCADE)
+    contributors = models.ManyToManyField(User, related_name='contributed_projects', through='Contributor')
+    type = models.CharField(max_length=50, choices=TYPE_CHOICES)
+    created_time = models.DateTimeField(auto_now_add=True)
+    '''
 
     def __str__(self):
         return self.name
