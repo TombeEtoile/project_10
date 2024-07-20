@@ -1,9 +1,17 @@
 from rest_framework import viewsets
 from django.contrib.auth.models import User
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.pagination import PageNumberPagination
 
 from .models import ContributorT, ProjectT, IssueT, CommentT
-from .serializers import UserSerializerT, ContributorSerializerT, ProjectSerializerT, IssueSerializerT, CommentSerializerT
+from .serializers import (
+    UserSerializerT, ContributorSerializerT, ProjectSerializerT, IssueSerializerT, CommentSerializerT)
+
+
+class PaginationView(PageNumberPagination):
+    page_size = 3
+    page_size_query_param = 'page_size'
+    max_page_size = 100
 
 
 class UserViewSet(viewsets.ModelViewSet):
