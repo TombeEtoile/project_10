@@ -51,8 +51,8 @@ INSTALLED_APPS = [
 
     # APPS
     'SoftDesk',
-    'accounts',
-    'features',
+    # 'accounts',
+    # 'features',
     'api',
 ]
 

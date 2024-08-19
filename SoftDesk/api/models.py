@@ -3,16 +3,16 @@ from django.contrib.auth.models import User
 import uuid
 
 
-class CustomUserT(models.Model):
+class CustomUser(models.Model):
 
     accounts = models.OneToOneField(User, on_delete=models.CASCADE)
 
     age = models.IntegerField()
-    can_be_contacted = models.BooleanField()
-    can_data_be_shared = models.BooleanField()
+    can_be_contacted = models.BooleanField(default=True)
+    can_data_be_shared = models.BooleanField(default=True)
 
 
-class ProjectT(models.Model):
+class Project(models.Model):
 
     PROJECT_TYPE = [
         ('backend', 'Back-End'),
@@ -25,21 +25,24 @@ class ProjectT(models.Model):
     title = models.CharField(max_length=35)
     description = models.TextField()
     type = models.CharField(max_length=50, choices=PROJECT_TYPE)
-    contributors = models.ManyToManyField(User, related_name='project_contributors', through='ContributorT')
+    contributors = models.ManyToManyField(User, related_name='project_contributors', through='Contributor')
     created_time = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.title
 
 
-class ContributorT(models.Model):
+class Contributor(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    project = models.ForeignKey(ProjectT, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
     role = models.CharField(max_length=35)
 
+    class Meta:
+        unique_together = ('project', 'user')
 
-class IssueT(models.Model):
+
+class Issue(models.Model):
     TYPE_CHOICES = [
         ('bug', 'Bug'),
         ('features', 'Features'),
@@ -58,7 +61,7 @@ class IssueT(models.Model):
         ('finished', 'Finished'),
     ]
 
-    project = models.ForeignKey(ProjectT, on_delete=models.CASCADE, related_name='related_project')
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='related_project')
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='issue_author')
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True)
@@ -68,14 +71,15 @@ class IssueT(models.Model):
     status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='to_do')
     created_time = models.DateTimeField(auto_now_add=True)
 
+
     def __str__(self):
         return self.title
 
 
-class CommentT(models.Model):
+class Comment(models.Model):
 
-    issue = models.ForeignKey(IssueT, on_delete=models.CASCADE, related_name='comment')
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comment')
+    issue = models.ForeignKey(Issue, on_delete=models.CASCADE, related_name='comment')
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comment_author')
     description = models.TextField(max_length=500)
     uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     created_time = models.DateTimeField(auto_now_add=True)

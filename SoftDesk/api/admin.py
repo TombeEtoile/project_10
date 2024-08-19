@@ -1,12 +1,12 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin, User
 
-from .models import ProjectT, ContributorT, CustomUserT, IssueT, CommentT
+from .models import Project, Contributor, CustomUser, Issue, Comment
 
 
 class CustomUserInLine(admin.StackedInline):
 
-    model = CustomUserT
+    model = CustomUser
 
 
 class UserProfileAdmin(UserAdmin):
@@ -40,7 +40,7 @@ class CommentAdmin(admin.ModelAdmin):
 
 admin.site.unregister(User)
 admin.site.register(User, UserProfileAdmin)
-admin.site.register(ProjectT, ProjectAdmin)
-admin.site.register(ContributorT, ContributorAdmin)
-admin.site.register(IssueT, IssueAdmin)
-admin.site.register(CommentT, CommentAdmin)
+admin.site.register(Project, ProjectAdmin)
+admin.site.register(Contributor, ContributorAdmin)
+admin.site.register(Issue, IssueAdmin)
+admin.site.register(Comment, CommentAdmin)

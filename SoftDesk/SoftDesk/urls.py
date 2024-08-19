@@ -16,9 +16,5 @@ router.registry.extend(api_router.registry)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
-
-    # ACCOUNTS
     path('user/', include('dj_rest_auth.urls')),
-
-    # FEATURES
 ]
