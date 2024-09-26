@@ -14,3 +14,16 @@ class IsAuthorOrReadOnly(permissions.BasePermission):
 
         # Write permissions are only allowed to the author of the resource.
         return obj.author == request.user
+
+
+class IsSelfOrReadOnly(permissions.BasePermission):
+    """
+    Custom permission to allow users to delete their own account only.
+    """
+
+    def has_object_permission(self, request, view, obj):
+        # Safe methods (GET, HEAD, OPTIONS) are allowed to everyone.
+        # if request.method in permissions.SAFE_METHODS:
+            # return True
+        # Only allow users to delete their own profile.
+        return obj.pk == request.user.pk

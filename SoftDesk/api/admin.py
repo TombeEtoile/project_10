@@ -1,17 +1,6 @@
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin, User
-
+from django.contrib.auth.admin import UserAdmin
 from .models import Project, Contributor, CustomUser, Issue, Comment
-
-
-class CustomUserInLine(admin.StackedInline):
-
-    model = CustomUser
-
-
-class UserProfileAdmin(UserAdmin):
-
-    inlines = (CustomUserInLine, )
 
 
 class ProjectAdmin(admin.ModelAdmin):
@@ -38,8 +27,7 @@ class CommentAdmin(admin.ModelAdmin):
     list_filter = ('author', 'description', 'created_time')
 
 
-admin.site.unregister(User)
-admin.site.register(User, UserProfileAdmin)
+admin.site.register(CustomUser, UserAdmin)
 admin.site.register(Project, ProjectAdmin)
 admin.site.register(Contributor, ContributorAdmin)
 admin.site.register(Issue, IssueAdmin)
