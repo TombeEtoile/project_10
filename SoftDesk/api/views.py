@@ -24,22 +24,6 @@ class PaginationView(PageNumberPagination):
     max_page_size = 100
 
 
-'''
-class SignupViewSet(APIView):
-
-    """
-    Create User. Return 201 code if successfully created
-    """
-
-    def post(self, request):
-        serializer = UserSignupSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-'''
-
-
 class UserViewSet(viewsets.ModelViewSet):
 
     permission_classes = (IsAuthenticated,)
@@ -128,7 +112,6 @@ class UserDeleteView(generics.DestroyAPIView):
 
     def get_object(self):
         # Récupère l'utilisateur en fonction de l'ID passé dans l'URL
-        print("test")
         user = get_object_or_404(CustomUser, pk=self.kwargs['pk'])
         return user
 
@@ -136,7 +119,7 @@ class UserDeleteView(generics.DestroyAPIView):
         user = self.get_object()  # Récupère l'utilisateur à supprimer
 
         # Vérifie si l'utilisateur connecté correspond à l'utilisateur à supprimer
-        if user != request.user.pk:
+        if user.pk != request.user.pk:
             return Response(
                 {"detail": "Vous ne pouvez supprimer que votre propre compte."},
                 status=status.HTTP_403_FORBIDDEN  # Refuse la requête avec une erreur 403

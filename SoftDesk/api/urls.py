@@ -19,5 +19,5 @@ urlpatterns = [
     path('register/', UserRegistrationView.as_view(), name='user-registration'),
     path('project/<int:pk>/', ProjectDetailViewSet.as_view(), name='project-detail'),
     path('issue/<int:pk>/', IssueDetailViewSet.as_view(), name='issue-detail'),
-    path('api/user/delete/', UserDeleteView.as_view(), name='user-delete'),
+    path('user/delete/<int:pk>/', UserDeleteView.as_view(), name='user-delete'),
 ]
